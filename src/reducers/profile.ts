@@ -15,7 +15,6 @@ const profile = (
     case REQUEST_FAILED: {
       return {
         ...state,
-        isLoggedIn: false,
         isFetching: false,
       }
     }

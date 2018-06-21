@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { StatelessComponent } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { App } from '../../typings'
 
-const StyledListItem = styled.li`
+const StyledAppItem = styled.li`
   padding: .5em 0;
   
   & + li {
@@ -18,15 +19,16 @@ interface AppItemProps {
 
 const AppItem: StatelessComponent<AppItemProps> = ({
   item: {
+    id,
     created,
     logo,
     name,
   },
 }) => {
   return (
-    <StyledListItem>
-      {name}
-    </StyledListItem>
+    <StyledAppItem>
+      <Link to={`/${id}`}>{name}</Link>
+    </StyledAppItem>
   )
 }
 

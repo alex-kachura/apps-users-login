@@ -19,7 +19,7 @@ export interface LoginResponse {
   accessToken: string
 }
 
-export interface LoginFailure {
+export interface RequestError {
   error: string
 }
 
@@ -32,19 +32,24 @@ export interface AccessTokenTestResponse {
   }
 }
 
+export type AppId = string
+
 export interface App {
-  id: string
+  id: AppId
   name: string
   created: string
   logo: string
+  users: User[]
 }
 
 export interface AppsResponse {
   apps: App[]
 }
 
+export type UserId = string
+
 export interface User {
-  id: string
+  id: UserId
   name: string
   email: string
   avatar: string
@@ -54,10 +59,20 @@ export interface UsersResponse {
   users: User[]
 }
 
-export interface DataState {
-  apps: App[]
+export interface AppsState {
+  items: App[]
   isPosting: boolean
   isFetching: boolean
+}
+
+export interface UsersState {
+  [key: string]: UsersInAppState
+}
+
+export interface UsersInAppState {
+  items: User[]
+  hasMore: boolean
+  offset: number
 }
 
 export interface ProfileState {
@@ -69,7 +84,8 @@ export interface ProfileState {
 export type ErrorMessageState = string | null
 
 export interface StoreState {
-  data: DataState
+  apps: AppsState
+  users: UsersState
   profile: ProfileState
   errorMessage: ErrorMessageState
 }

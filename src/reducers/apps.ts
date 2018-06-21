@@ -1,9 +1,9 @@
-import { APP_UPDATED, DATA_RECEIVED, FETCH_DATA, REQUEST_FAILED, UPDATE_APP } from '../actions'
-import { Action, DataState } from '../typings'
+import { APP_UPDATED, APPS_RECEIVED, FETCH_DATA, REQUEST_FAILED, UPDATE_APP } from '../actions'
+import { Action, AppsState } from '../typings'
 
-const data = (
-  state: DataState = {
-    apps: [],
+const apps = (
+  state: AppsState = {
+    items: [],
     isFetching: true,
     isPosting: false,
   },
@@ -18,17 +18,17 @@ const data = (
         isFetching: true,
       }
     }
-    case DATA_RECEIVED: {
-      return {
-        ...state,
-        apps: payload,
-        isFetching: false,
-      }
-    }
     case REQUEST_FAILED: {
       return {
         ...state,
-        apps: [],
+        items: [],
+        isFetching: false,
+      }
+    }
+    case APPS_RECEIVED: {
+      return {
+        ...state,
+        items: payload,
         isFetching: false,
       }
     }
@@ -50,4 +50,4 @@ const data = (
   }
 }
 
-export default data
+export default apps

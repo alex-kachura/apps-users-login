@@ -6,8 +6,12 @@ const errorMessage = (state: ErrorMessageState = null, action: Action) => {
 
   if (type === RESET_ERROR_MESSAGE) {
     return null
-  } else if (payload && payload.message) {
-    return payload.message
+  } else if (payload) {
+    if (payload.message) {
+      return payload.message
+    } else if (payload.error) {
+      return payload.error
+    }
   }
 
   return state

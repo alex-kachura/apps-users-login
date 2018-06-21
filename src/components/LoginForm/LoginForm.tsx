@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ChangeEvent, Component, FormEvent } from 'react'
+import { ChangeEvent, FormEvent, PureComponent } from 'react'
 import { isEmpty } from 'lodash'
 import styled from 'styled-components'
 
@@ -31,7 +31,7 @@ interface LoginState {
   errors: LoginErrors;
 }
 
-class LoginForm extends Component<LoginFormProps, LoginState> {
+class LoginForm extends PureComponent<LoginFormProps, LoginState> {
   constructor(props: LoginFormProps) {
     super(props)
 

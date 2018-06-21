@@ -2,31 +2,56 @@ import axios from 'axios'
 import { Dispatch } from 'react-redux'
 
 import { fetch, post, put } from '../services/backend'
-import { AccessTokenTestResponse, App, AppsResponse, LoginData, LoginFailure, LoginResponse } from '../typings'
-import { AUTH_KEY } from '../consts'
+import {
+  AccessTokenTestResponse,
+  App,
+  AppId,
+  AppsResponse,
+  LoginData,
+  LoginResponse,
+  RequestError,
+  User,
+  UsersResponse,
+} from '../typings'
+import { AUTH_KEY, USERS_LIMIT } from '../consts'
 
 export const FETCH_DATA = 'FETCH_DATA'
 export const requestData = () => ({
   type: FETCH_DATA,
 })
 
-export const DATA_RECEIVED = 'DATA_RECEIVED'
-export const receiveData = (apps: App[]) => ({
+export const APPS_RECEIVED = 'APPS_RECEIVED'
+export const receiveApps = (apps: App[]) => ({
   payload: apps,
-  type: DATA_RECEIVED,
+  type: APPS_RECEIVED,
 })
 
 export const REQUEST_FAILED = 'REQUEST_FAILED'
-export const requestFailed = (error: Error | string) => ({
+export const requestFailed = (error: Error | RequestError) => ({
   payload: error,
   type: REQUEST_FAILED,
 })
-export const fetchData = () => (dispatch: Dispatch) => {
+
+export const fetchApps = () => (dispatch: Dispatch) => {
   dispatch(requestData())
 
   return fetch('/apps')
-    .then(({ apps }: AppsResponse) => dispatch(receiveData(apps)))
-    .catch((error: Error) => dispatch(requestFailed(error)))
+    .then(({ apps }: AppsResponse) => dispatch(receiveApps(apps)))
+    .catch((error: Error | RequestError) => dispatch(requestFailed(error)))
+}
+
+export const USERS_RECEIVED = 'USERS_RECEIVED'
+export const receiveUsers = (users: User[], appId: AppId) => ({
+  payload: {
+    items: users,
+    appId,
+  },
+  type: USERS_RECEIVED,
+})
+
+export const fetchUsers = (id: AppId, offset: number) => (dispatch: Dispatch) => {
+  return fetch(`/apps/${id}/users?limit=${USERS_LIMIT}&offset=${offset}`)
+    .then(({ users }: UsersResponse) => dispatch(receiveUsers(users, id)))
 }
 
 export const POST_AUTH = 'POST_AUTH'
@@ -50,7 +75,7 @@ export const login = (auth: LoginData) => (dispatch: Dispatch) => {
           dispatch(loggedIn())
         })
     })
-    .catch(({ error }: LoginFailure) => dispatch(requestFailed(error)))
+    .catch((error: RequestError) => dispatch(requestFailed(error)))
 }
 
 export const LOG_OUT = 'LOG_OUT'

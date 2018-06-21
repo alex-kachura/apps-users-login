@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Component } from 'react'
+import { PureComponent } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect, Dispatch } from 'react-redux'
 
@@ -13,7 +13,7 @@ interface LoginProps {
   login(data: LoginData): Promise<LoginResponse>
 }
 
-class Login extends Component<LoginProps, {}> {
+class Login extends PureComponent<LoginProps, {}> {
   public render() {
     const { isPosting } = this.props
 

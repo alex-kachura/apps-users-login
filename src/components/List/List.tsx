@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Component } from 'react'
+import { PureComponent } from 'react'
 import { isEmpty } from 'lodash'
 import styled from 'styled-components'
 
@@ -15,7 +15,7 @@ interface ListProps<T> {
   itemRenderer: (item: T) => JSX.Element;
 }
 
-export default class List<T> extends Component<ListProps<T>, {}> {
+export default class List<T> extends PureComponent<ListProps<T>, {}> {
   public render() {
     const { items, itemRenderer } = this.props
 

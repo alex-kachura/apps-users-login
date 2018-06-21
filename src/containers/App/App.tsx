@@ -1,13 +1,15 @@
 import * as React from 'react'
-import { Component, MouseEvent } from 'react'
+import { MouseEvent, PureComponent } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect, Dispatch } from 'react-redux'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { isEmpty } from 'lodash'
 
 import { loggedIn, logout, resetErrorMessage } from '../../actions'
 import Error from '../../components/Error/Error'
-import Home from '../Home/Home'
 import Login from '../Login/Login'
+import Apps from '../Apps/Apps'
+import Users from '../Users/Users'
 import { ProfileState, StoreState } from '../../typings'
 import { AUTH_KEY } from '../../consts'
 import axios from 'axios'
@@ -23,7 +25,7 @@ interface AppProps {
   resetErrorMessage(): void
 }
 
-class App extends Component<AppProps, {}> {
+class App extends PureComponent<AppProps, {}> {
   public componentDidMount() {
     let auth
 
@@ -49,7 +51,14 @@ class App extends Component<AppProps, {}> {
     }
 
     if (profile.isLoggedIn) {
-      return <Home />
+      return (
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Apps} />
+            <Route exact path="/:appId" component={Users} />
+          </Switch>
+        </BrowserRouter>
+      )
     }
 
     return <Login />

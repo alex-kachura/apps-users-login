@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux'
 
-import data from './data'
+import apps from './apps'
+import users from './users'
 import profile from './profile'
 import errorMessage from './errorMessage'
 
 const rootReducer = combineReducers({
-  data,
+  apps,
+  users,
   profile,
   errorMessage,
 })
