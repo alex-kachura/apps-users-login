@@ -1,10 +1,10 @@
-import { LOG_OUT, LOGGED_IN, POST_AUTH, REQUEST_FAILED } from '../actions'
+import { CHECKING_AUTH, LOGGED_IN, LOGGED_OUT, LOGGING_IN } from '../actions'
 import { Action, ProfileState } from '../typings'
 
 const profile = (
   state: ProfileState = {
     isLoggedIn: false,
-    isFetching: true,
+    isChecking: true,
     isPosting: false,
   },
   action: Action,
@@ -12,16 +12,16 @@ const profile = (
   const { type } = action
 
   switch (type) {
-    case REQUEST_FAILED: {
-      return {
-        ...state,
-        isFetching: false,
-      }
-    }
-    case POST_AUTH: {
+    case LOGGING_IN: {
       return {
         ...state,
         isPosting: true,
+      }
+    }
+    case CHECKING_AUTH: {
+      return {
+        ...state,
+        isChecking: true,
       }
     }
     case LOGGED_IN: {
@@ -29,12 +29,14 @@ const profile = (
         ...state,
         isLoggedIn: true,
         isPosting: false,
+        isChecking: false,
       }
     }
-    case LOG_OUT: {
+    case LOGGED_OUT: {
       return {
         ...state,
         isLoggedIn: false,
+        isChecking: false,
       }
     }
     default: {

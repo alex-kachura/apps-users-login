@@ -2,66 +2,70 @@ import * as React from 'react'
 import { MouseEvent, PureComponent } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect, Dispatch } from 'react-redux'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { isEmpty } from 'lodash'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
-import { loggedIn, logout, resetErrorMessage } from '../../actions'
+import { loggedIn, loggedOut, resetErrorMessage, testAccessToken } from '../../actions'
+import Loading from '../../components/Loading/Loading'
 import Error from '../../components/Error/Error'
-import Login from '../Login/Login'
 import Apps from '../Apps/Apps'
 import Users from '../Users/Users'
-import { ProfileState, StoreState } from '../../typings'
-import { AUTH_KEY } from '../../consts'
-import axios from 'axios'
+import Login from '../Login/Login'
+import { AccessTokenTestResponse, StoreState } from '../../typings'
 
 interface AppProps {
-  profile: ProfileState
+  isLoggedIn: boolean
+  isChecking: boolean
   errorMessage: string | null
 
-  logout(): void
+  loggedOut(): void
 
   loggedIn(): void
+
+  testAccessToken(): Promise<AccessTokenTestResponse>
 
   resetErrorMessage(): void
 }
 
 class App extends PureComponent<AppProps, {}> {
   public componentDidMount() {
-    let auth
-
-    try {
-      auth = JSON.parse(localStorage.getItem(AUTH_KEY) || '""')
-    } catch (e) {
-      window.console.warn(e)
-    }
-
-    if (isEmpty(auth) || auth.exp * 1000 < Date.now()) {
-      this.props.logout()
-    } else {
-      axios.defaults.headers.common.Authorization = auth.accessToken
-      this.props.loggedIn()
-    }
+    return this.props.testAccessToken()
   }
 
   public render() {
-    const { profile, errorMessage } = this.props
+    const { errorMessage, isChecking } = this.props
+
+    if (isChecking) {
+      return <Loading />
+    }
 
     if (errorMessage) {
       return <Error error={errorMessage} onDismiss={this.onDismiss} />
     }
 
-    if (profile.isLoggedIn) {
-      return (
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={Apps} />
-            <Route exact path="/:appId" component={Users} />
-          </Switch>
-        </BrowserRouter>
-      )
-    }
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route path="/apps" render={this.loggedInRenderer} />
+          <Route exact path="/login" component={Login} />
+          <Redirect to="/apps" />
+        </Switch>
+      </BrowserRouter>
+    )
+  }
 
-    return <Login />
+  private loggedInRenderer = () => {
+    const { isLoggedIn } = this.props
+
+    return isLoggedIn ? (
+      <Route>
+        <Switch>
+          <Route exact path="/apps" component={Apps} />
+          <Route exact path="/apps/:appId/users" component={Users} />
+        </Switch>
+      </Route>
+    ) : (
+      <Redirect to="/login" />
+    )
   }
 
   private onDismiss = (e: MouseEvent) => {
@@ -71,14 +75,16 @@ class App extends PureComponent<AppProps, {}> {
 }
 
 const mapStateToProps = (state: StoreState) => ({
-  profile: state.profile,
+  isLoggedIn: state.profile.isLoggedIn,
+  isChecking: state.profile.isChecking,
   errorMessage: state.errorMessage,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
   {
-    logout,
+    loggedOut,
     loggedIn,
+    testAccessToken,
     resetErrorMessage,
   },
   dispatch,

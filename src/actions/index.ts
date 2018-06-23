@@ -1,7 +1,7 @@
-import axios from 'axios'
 import { Dispatch } from 'react-redux'
 
-import { fetch, post, put } from '../services/backend'
+import { fetch, post, put, setAuthorizationHeaders } from '../services/backend'
+import { AUTH_EXPIRY_KEY, AUTH_TOKEN_KEY, USERS_LIMIT } from '../consts'
 import {
   AccessTokenTestResponse,
   App,
@@ -13,11 +13,10 @@ import {
   User,
   UsersResponse,
 } from '../typings'
-import { AUTH_KEY, USERS_LIMIT } from '../consts'
 
-export const FETCH_DATA = 'FETCH_DATA'
-export const requestData = () => ({
-  type: FETCH_DATA,
+export const FETCHING_APPS = 'FETCHING_APPS'
+export const requestApps = () => ({
+  type: FETCHING_APPS,
 })
 
 export const APPS_RECEIVED = 'APPS_RECEIVED'
@@ -33,7 +32,7 @@ export const requestFailed = (error: Error | RequestError) => ({
 })
 
 export const fetchApps = () => (dispatch: Dispatch) => {
-  dispatch(requestData())
+  dispatch(requestApps())
 
   return fetch('/apps')
     .then(({ apps }: AppsResponse) => dispatch(receiveApps(apps)))
@@ -49,52 +48,65 @@ export const receiveUsers = (users: User[], appId: AppId) => ({
   type: USERS_RECEIVED,
 })
 
+export const FETCHING_USERS = 'FETCHING_USERS'
+export const requestUsers = () => ({
+  type: FETCHING_USERS,
+})
+
 export const fetchUsers = (id: AppId, offset: number) => (dispatch: Dispatch) => {
+  dispatch(requestUsers())
+
   return fetch(`/apps/${id}/users?limit=${USERS_LIMIT}&offset=${offset}`)
     .then(({ users }: UsersResponse) => dispatch(receiveUsers(users, id)))
+    .catch((error: Error | RequestError) => dispatch(requestFailed(error)))
 }
 
-export const POST_AUTH = 'POST_AUTH'
+export const LOGGING_IN = 'LOGGING_IN'
 export const postAuth = () => ({
-  type: POST_AUTH,
+  type: LOGGING_IN,
 })
 export const login = (auth: LoginData) => (dispatch: Dispatch) => {
   dispatch(postAuth())
 
   return post(`/login`, auth)
     .then(({ accessToken }: LoginResponse) => {
-      axios.defaults.headers.common.Authorization = accessToken
-
-      return fetch(`/`)
-        .then(({ token: { exp } }: AccessTokenTestResponse) => {
-          localStorage.setItem(AUTH_KEY, JSON.stringify({
-            accessToken,
-            exp,
-          }))
-
-          dispatch(loggedIn())
-        })
+      localStorage.setItem(AUTH_TOKEN_KEY, accessToken)
+      setAuthorizationHeaders()
+      dispatch(loggedIn())
     })
     .catch((error: RequestError) => dispatch(requestFailed(error)))
 }
 
-export const LOG_OUT = 'LOG_OUT'
-export const logout = () => (dispatch: Dispatch) => {
-  localStorage.removeItem(AUTH_KEY)
+export const testAccessToken = () => (dispatch: Dispatch) => {
+  dispatch(checkAuth())
+  setAuthorizationHeaders()
 
-  dispatch({
-    type: LOG_OUT,
-  })
+  return fetch(`/`)
+    .then(({ token: { exp } }: AccessTokenTestResponse) => {
+      localStorage.setItem(AUTH_EXPIRY_KEY, exp.toString())
+      dispatch(loggedIn())
+    })
+    .catch(() => dispatch(loggedOut()))
 }
+
+export const CHECKING_AUTH = 'CHECKING_AUTH'
+export const checkAuth = () => ({
+  type: CHECKING_AUTH,
+})
+
+export const LOGGED_OUT = 'LOGGED_OUT'
+export const loggedOut = () => ({
+  type: LOGGED_OUT,
+})
 
 export const LOGGED_IN = 'LOGGED_IN'
 export const loggedIn = () => ({
   type: LOGGED_IN,
 })
 
-export const UPDATE_APP = 'UPDATE_APP'
+export const UPDATING_APP = 'UPDATING_APP'
 export const putApp = () => ({
-  type: UPDATE_APP,
+  type: UPDATING_APP,
 })
 export const updateApp = (app: App) => (dispatch: Dispatch) => {
   dispatch(putApp())

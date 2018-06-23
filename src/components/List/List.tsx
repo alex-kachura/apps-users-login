@@ -13,13 +13,14 @@ const StyledList = styled.ul`
 interface ListProps<T> {
   items: T[];
   itemRenderer: (item: T) => JSX.Element;
+  noEmpty?: boolean;
 }
 
 export default class List<T> extends PureComponent<ListProps<T>, {}> {
   public render() {
-    const { items, itemRenderer } = this.props
+    const { items, itemRenderer, noEmpty } = this.props
 
-    if (isEmpty(items)) {
+    if (!noEmpty && isEmpty(items)) {
       return <Empty />
     }
 

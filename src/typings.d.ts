@@ -39,7 +39,6 @@ export interface App {
   name: string
   created: string
   logo: string
-  users: User[]
 }
 
 export interface AppsResponse {
@@ -59,6 +58,12 @@ export interface UsersResponse {
   users: User[]
 }
 
+export interface ProfileState {
+  isLoggedIn: boolean
+  isChecking: boolean
+  isPosting: boolean
+}
+
 export interface AppsState {
   items: App[]
   isPosting: boolean
@@ -66,6 +71,11 @@ export interface AppsState {
 }
 
 export interface UsersState {
+  byAppId: UsersByAppIdState
+  isFetching: boolean
+}
+
+interface UsersByAppIdState {
   [key: string]: UsersInAppState
 }
 
@@ -73,12 +83,6 @@ export interface UsersInAppState {
   items: User[]
   hasMore: boolean
   offset: number
-}
-
-export interface ProfileState {
-  isLoggedIn: boolean
-  isPosting: boolean
-  isFetching: boolean
 }
 
 export type ErrorMessageState = string | null

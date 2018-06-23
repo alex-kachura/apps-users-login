@@ -27,7 +27,7 @@ const AppItem: StatelessComponent<AppItemProps> = ({
 }) => {
   return (
     <StyledAppItem>
-      <Link to={`/${id}`}>{name}</Link>
+      <Link to={`/apps/${id}/users`}>{name}</Link>
     </StyledAppItem>
   )
 }

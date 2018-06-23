@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import Field from '../Field/Field'
 import Button from '../Button/Button'
-import { AUTH_FIELDS, EMAIL_REGEX, SESSION_EXPIRY } from '../../consts'
+import { AUTH_FIELDS, EMAIL_REGEX, SESSION_EXPIRY_PERIOD } from '../../consts'
 import { LoginData } from '../../typings'
 
 const Form = styled.form`
@@ -97,7 +97,7 @@ class LoginForm extends PureComponent<LoginFormProps, LoginState> {
       errors: {},
     })
 
-    return this.props.onSubmit({ email, password, expiry: SESSION_EXPIRY })
+    return this.props.onSubmit({ email, password, expiry: SESSION_EXPIRY_PERIOD })
   }
 }
 

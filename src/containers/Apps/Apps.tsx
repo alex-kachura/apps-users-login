@@ -3,21 +3,22 @@ import { PureComponent } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect, Dispatch } from 'react-redux'
 
-import { fetchApps } from '../../actions'
+import { fetchApps, updateApp } from '../../actions'
+import Loading from '../../components/Loading/Loading'
 import AppsList from '../../components/AppsList/AppsList'
 import { App, StoreState } from '../../typings'
-import Loading from '../../components/Loading/Loading'
 
 interface AppsProps {
   apps: App[]
   isFetching: boolean
 
-  fetchData(): void
+  fetchApps(): void
+  updateApp(): void
 }
 
 class Apps extends PureComponent<AppsProps, {}> {
   public componentDidMount() {
-    this.props.fetchData()
+    this.props.fetchApps()
   }
 
   public render() {
@@ -38,7 +39,8 @@ const mapStateToProps = (state: StoreState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
   {
-    fetchData: fetchApps,
+    fetchApps,
+    updateApp,
   },
   dispatch,
 )

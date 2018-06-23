@@ -17,6 +17,7 @@ const UsersList: StatelessComponent<UsersListProps> = ({ items }) => {
     <List
       items={items}
       itemRenderer={renderItem}
+      noEmpty
     />
   )
 }

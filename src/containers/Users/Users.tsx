@@ -8,11 +8,12 @@ import * as InfiniteScroll from 'react-infinite-scroller'
 import Loading from '../../components/Loading/Loading'
 import { fetchUsers } from '../../actions'
 import { getAppUsers, getHasMore, getOffset } from '../../selectors'
-import { AppId, User } from '../../typings'
 import UsersList from '../../components/UsersList/UsersList'
+import { AppId, StoreState, User } from '../../typings'
 
 interface UsersProps {
   users: User[]
+  isFetching: boolean
   hasMore: boolean
   offset: number
   match: {
@@ -33,6 +34,7 @@ class Users extends PureComponent<UsersProps> {
         loadMore={this.loadMore}
         loader={Loading()}
         hasMore={hasMore}
+        threshold={50}
       >
         <UsersList items={users} />
       </InfiniteScroll>
@@ -40,7 +42,11 @@ class Users extends PureComponent<UsersProps> {
   }
 
   private loadMore = () => {
-    const { match: { params: { appId } }, offset } = this.props
+    const { match: { params: { appId } }, offset, isFetching } = this.props
+
+    if (isFetching) {
+      return
+    }
 
     return this.props.fetchUsers(appId, offset)
   }
@@ -50,6 +56,7 @@ const mapStateToProps = createStructuredSelector({
   users: getAppUsers(),
   hasMore: getHasMore(),
   offset: getOffset(),
+  isFetching: (state: StoreState) => state.users.isFetching,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(

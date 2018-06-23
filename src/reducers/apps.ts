@@ -1,4 +1,4 @@
-import { APP_UPDATED, APPS_RECEIVED, FETCH_DATA, REQUEST_FAILED, UPDATE_APP } from '../actions'
+import { APP_UPDATED, APPS_RECEIVED, FETCHING_APPS, REQUEST_FAILED, UPDATING_APP } from '../actions'
 import { Action, AppsState } from '../typings'
 
 const apps = (
@@ -12,7 +12,7 @@ const apps = (
   const { type, payload } = action
 
   switch (type) {
-    case FETCH_DATA: {
+    case FETCHING_APPS: {
       return {
         ...state,
         isFetching: true,
@@ -32,7 +32,7 @@ const apps = (
         isFetching: false,
       }
     }
-    case UPDATE_APP: {
+    case UPDATING_APP: {
       return {
         ...state,
         isPosting: true,
