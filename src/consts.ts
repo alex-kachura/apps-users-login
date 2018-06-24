@@ -13,3 +13,19 @@ export enum AUTH_FIELDS {
 }
 
 export const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+export const MODAL_STYLE = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    border: '0',
+    boxShadow: '0 1px 2px rgba(0, 0, 0, .24)',
+  },
+  overlay: {
+    backgroundColor: 'rgba(243, 243, 243, .6)',
+  },
+}

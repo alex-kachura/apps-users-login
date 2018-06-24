@@ -9,9 +9,13 @@ import { AUTH_FIELDS, EMAIL_REGEX, SESSION_EXPIRY_PERIOD } from '../../consts'
 import { LoginData } from '../../typings'
 
 const Form = styled.form`
-  flex-grow: 1;
+  flex-grow: 0;
+  flex-basis: 460px;
   display: flex;
   flex-direction: column;
+  padding: 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .24);
 `
 
 interface LoginFormProps {

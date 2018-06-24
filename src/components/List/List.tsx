@@ -4,29 +4,30 @@ import { isEmpty } from 'lodash'
 import styled from 'styled-components'
 
 import Empty from '../Empty/Empty'
+import { ListActions } from '../../typings'
 
 const StyledList = styled.ul`
-  list-style: none;
-  padding: 0;
+  padding: .7rem;
 `
 
 interface ListProps<T> {
   items: T[];
-  itemRenderer: (item: T) => JSX.Element;
-  noEmpty?: boolean;
+  actions?: ListActions<T>
+
+  itemRenderer(item: T, actions?: ListActions<T>): JSX.Element
 }
 
 export default class List<T> extends PureComponent<ListProps<T>, {}> {
   public render() {
-    const { items, itemRenderer, noEmpty } = this.props
+    const { items, itemRenderer, actions } = this.props
 
-    if (!noEmpty && isEmpty(items)) {
+    if (isEmpty(items)) {
       return <Empty />
     }
 
     return (
       <StyledList>
-        {items.map(itemRenderer)}
+        {items.map((item) => itemRenderer(item, actions))}
       </StyledList>
     )
   }

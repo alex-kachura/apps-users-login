@@ -3,10 +3,19 @@ import { PureComponent } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect, Dispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import styled from 'styled-components'
 
 import LoginForm from '../../components/LoginForm/LoginForm'
 import { login } from '../../actions'
 import { LoginData, LoginResponse, StoreState } from '../../typings'
+
+const LoginPage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`
 
 interface LoginProps {
   isPosting: boolean
@@ -24,10 +33,12 @@ class Login extends PureComponent<LoginProps, {}> {
     }
 
     return (
-      <LoginForm
-        isPosting={isPosting}
-        onSubmit={this.props.login}
-      />
+      <LoginPage>
+        <LoginForm
+          isPosting={isPosting}
+          onSubmit={this.props.login}
+        />
+      </LoginPage>
     )
   }
 }

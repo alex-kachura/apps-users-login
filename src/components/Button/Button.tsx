@@ -18,7 +18,7 @@ const StyledButton = styled.button`
 
 const StyledButtonPrimary = StyledButton.extend`
   font-size: 1.1rem;
-  margin-top: 1em;
+  margin-top: 3rem;
   padding: 1rem 1.9rem;
   width: 100%;
   color: #ffffff;

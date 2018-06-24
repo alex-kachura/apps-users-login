@@ -1,18 +1,15 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
+
+import { AUTH_FIELDS } from './consts'
+
 declare module 'redux' {
   export type GenericStoreEnhancer = any;
 }
-
-import { AUTH_FIELDS } from './consts'
 
 export interface LoginData {
   [AUTH_FIELDS.email]: string
   [AUTH_FIELDS.password]: string
   [AUTH_FIELDS.expiry]?: string
-}
-
-export interface Auth {
-  accessToken: string
-  exp: number
 }
 
 export interface LoginResponse {
@@ -38,6 +35,12 @@ export interface App {
   id: AppId
   name: string
   created: string
+  logo: string
+}
+
+export interface AppUpdate {
+  id: AppId
+  name: string
   logo: string
 }
 
@@ -98,3 +101,12 @@ export interface Action {
   type: string
   payload?: any
 }
+
+export interface ListAction<T> {
+  title: string
+  icon: IconProp
+
+  fn(item: T, ...args: any[]): any
+}
+
+export type ListActions<T> = ListAction<T>[]

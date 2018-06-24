@@ -8,7 +8,7 @@ const StyledField = styled.label`
   display: flex;
   flex-direction: column;
   position: relative;
-  line-height: 1.3em;
+  line-height: 1.3rem;
    
   & + label {
     margin-top: 2rem;
@@ -16,7 +16,7 @@ const StyledField = styled.label`
 `
 const ErrorMessage = styled.span`
   font-size: .9rem;
-  line-height: 2em;
+  line-height: 2rem;
   color: #d0021b;
 `
 

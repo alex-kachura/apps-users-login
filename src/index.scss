@@ -1,7 +1,7 @@
+@import '../node_modules/reset-css/sass/reset';
+
 html {
-  font-size: 100%;
   text-size-adjust: 100%;
-  font-variant-ligatures: none;
   font-variant-ligatures: none;
   text-rendering: optimizeLegibility;
   font-smoothing: antialiased;
@@ -9,12 +9,11 @@ html {
 }
 
 html, body {
-  font-family: sans-serif;
+  font-family: "Lucida Sans Unicode", sans-serif;
   font-size: 14px;
-  margin: 0;
-  padding: 0;
   height: 100%;
-  line-height: 1.5em;
+  line-height: 1.5rem;
+  background-color: #f3f3f3;
 }
 
 * {

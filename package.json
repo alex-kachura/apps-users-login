@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.0-14",
+    "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
+    "@fortawesome/react-fontawesome": "^0.1.0-11",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "lodash": "^4.17.10",
@@ -11,6 +14,7 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-infinite-scroller": "^1.1.4",
+    "react-modal": "^3.4.5",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "2.16.0",
@@ -18,6 +22,7 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
+    "reset-css": "^4.0.1",
     "styled-components": "^3.3.2",
     "uuid": "^3.2.1"
   },
@@ -38,6 +43,7 @@
     "@types/react": "^16.3.17",
     "@types/react-dom": "^16.0.6",
     "@types/react-infinite-scroller": "^1.0.6",
+    "@types/react-modal": "^3.1.2",
     "@types/react-redux": "^6.0.2",
     "@types/react-router-dom": "^4.2.7",
     "@types/react-test-renderer": "^16.0.1",

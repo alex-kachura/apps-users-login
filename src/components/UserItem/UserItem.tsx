@@ -2,14 +2,13 @@ import * as React from 'react'
 import { StatelessComponent } from 'react'
 import styled from 'styled-components'
 
+import ListItem from '../ListItem/ListItem'
+import Image from '../Image/Image'
+import Flex from '../Flex/Flex'
 import { User } from '../../typings'
 
-const StyledAppItem = styled.li`
-  padding: .5em 0;
-  
-  & + li {
-    border-top: 1px solid #f5f5fa;
-  }
+const UserName = styled.div`
+  margin-left: 1rem;
 `
 
 interface UserItemProps {
@@ -17,15 +16,14 @@ interface UserItemProps {
 }
 
 const UserItem: StatelessComponent<UserItemProps> = ({
-  item: {
-    id,
-    email,
-    avatar,
-    name,
-  },
+  item: { id, email, avatar, name },
 }) => {
   return (
-    <StyledAppItem>{name}</StyledAppItem>
+    <ListItem>
+      <Image src={avatar} alt={name} title={name} />
+      <UserName>{name}</UserName>
+      <Flex />
+    </ListItem>
   )
 }
 

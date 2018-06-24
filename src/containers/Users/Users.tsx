@@ -5,9 +5,9 @@ import { connect, Dispatch } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import * as InfiniteScroll from 'react-infinite-scroller'
 
-import Loading from '../../components/Loading/Loading'
-import { fetchUsers } from '../../actions'
 import { getAppUsers, getHasMore, getOffset } from '../../selectors'
+import { fetchUsers } from '../../actions'
+import Loading from '../../components/Loading/Loading'
 import UsersList from '../../components/UsersList/UsersList'
 import { AppId, StoreState, User } from '../../typings'
 
@@ -30,14 +30,16 @@ class Users extends PureComponent<UsersProps> {
     const { users, hasMore } = this.props
 
     return (
-      <InfiniteScroll
-        loadMore={this.loadMore}
-        loader={Loading()}
-        hasMore={hasMore}
-        threshold={50}
-      >
-        <UsersList items={users} />
-      </InfiniteScroll>
+      <main>
+        <InfiniteScroll
+          loadMore={this.loadMore}
+          loader={Loading()}
+          hasMore={hasMore}
+          threshold={50}
+        >
+          <UsersList items={users} />
+        </InfiniteScroll>
+      </main>
     )
   }
 

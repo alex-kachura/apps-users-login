@@ -7,6 +7,7 @@ import {
   App,
   AppId,
   AppsResponse,
+  AppUpdate,
   LoginData,
   LoginResponse,
   RequestError,
@@ -108,10 +109,10 @@ export const UPDATING_APP = 'UPDATING_APP'
 export const putApp = () => ({
   type: UPDATING_APP,
 })
-export const updateApp = (app: App) => (dispatch: Dispatch) => {
+export const updateApp = (app: AppUpdate) => (dispatch: Dispatch) => {
   dispatch(putApp())
 
-  return put(`/apps`, app)
+  return put(`/apps/${app.id}`, app)
     .then(() => dispatch(appUpdated()))
     .catch((error: Error) => dispatch(requestFailed(error)))
 }
