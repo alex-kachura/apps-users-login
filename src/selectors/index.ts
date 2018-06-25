@@ -17,7 +17,6 @@ export const getHasMore = () => createSelector(
   (users: UsersState, id: AppId) => users.byAppId[id] ? users.byAppId[id].hasMore : true,
 )
 
-
 export const getOffset = () => createSelector(
   getUsers,
   getAppId,

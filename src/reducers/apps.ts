@@ -21,7 +21,6 @@ const apps = (
     case REQUEST_FAILED: {
       return {
         ...state,
-        items: [],
         isFetching: false,
       }
     }

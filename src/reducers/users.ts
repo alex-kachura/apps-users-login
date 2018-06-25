@@ -25,7 +25,7 @@ const users = (
       }
     }
     case USERS_RECEIVED: {
-      const { items, appId } = payload
+      const { appId, items } = payload
       const byAppId = { ...state.byAppId }
       const app = state.byAppId[appId]
 
